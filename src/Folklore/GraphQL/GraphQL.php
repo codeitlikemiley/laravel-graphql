@@ -16,6 +16,8 @@ use Folklore\GraphQL\Exception\SchemaNotFound;
 use Folklore\GraphQL\Events\SchemaAdded;
 use Folklore\GraphQL\Events\TypeAdded;
 
+use Folklore\GraphQL\Support\PaginationType;
+
 class GraphQL
 {
     protected $app;
@@ -292,5 +294,14 @@ class GraphQL
         }
 
         return $error;
+    }
+
+    public function paginate($typeName)
+    {
+        if (!isset($this->typesInstances[$typeName . 'Pagination'])) {
+            $this->typesInstances[$typeName . 'Pagination'] = new PaginationType($typeName);
+        }
+
+        return $this->typesInstances[$typeName . 'Pagination'];
     }
 }
